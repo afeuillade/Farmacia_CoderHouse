@@ -11,6 +11,7 @@ public class ProductoDto {
     private String codigoBarras;
     private String nombre;
     private Double precio;  
+    private Integer stock;
     private List<String> farmacias;
   
 

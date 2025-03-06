@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,8 +23,8 @@ public class Producto {
     @Column(name = "NAME")
     private String nombre;
     private Double precio;
+    private Integer stock;
 
-    
     
     private LocalDate fechaCreacion;
     private LocalDate fechaUpdate;
@@ -37,8 +38,19 @@ public class Producto {
 
     @ManyToMany(mappedBy = "productos") private List<Cliente> clientes;
 
-    @ManyToMany(mappedBy = "productos") 
-private List<Factura> facturas;
+    @ManyToMany(mappedBy = "productos")
+    private List<Factura> facturas;
+
+   
+    // Método para reducir el stock
+    public void reducirStock(int cantidad) {
+        if (this.stock >= cantidad) {
+            this.stock -= cantidad;
+        } else {
+            throw new RuntimeException("Stock insuficiente para el producto: " + this.nombre);
+        }
+    }
+
 
 
 

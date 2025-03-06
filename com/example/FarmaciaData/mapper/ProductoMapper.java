@@ -23,6 +23,7 @@ public class ProductoMapper {
                 .codigoBarras(producto.getCodigoBarras())
                 .nombre(producto.getNombre())
                 .precio(producto.getPrecio())
+                .stock(producto.getStock())
                 .farmacias(producto.getFarmacias() !=null
                 ? producto.getFarmacias().stream().map(Farmacia::getNombre).toList()
                 : List.of())
@@ -43,9 +44,10 @@ public class ProductoMapper {
         Producto productoExistente = productoRepository.findByNombre(productoDto.getNombre());
     
         return Producto.builder()
-                .codigoBarras(productoExistente != null ? productoExistente.getCodigoBarras() : productoDto.getCodigoBarras()) // Mantener código si existe
+                .codigoBarras(productoExistente != null ? productoExistente.getCodigoBarras() : productoDto.getCodigoBarras()) 
                 .nombre(productoDto.getNombre())
                 .precio(productoDto.getPrecio())
+                .stock(productoDto.getStock())
                 .farmacias(productoDto.getFarmacias() != null
                     ? farmaciaRepository.findAll().stream()
                         .filter(farmacia -> productoDto.getFarmacias().contains(farmacia.getNombre()))

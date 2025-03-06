@@ -25,6 +25,7 @@ public class FacturaMapper {
             factura.setTotalCalculado(factura.calcularTotal());
         }
     
+        System.out.println("Convirtiendo factura con ID: " + factura.getId());
         return FacturaDto.builder()
             .id(factura.getId())
             .numeroFactura(factura.getNumeroFactura())

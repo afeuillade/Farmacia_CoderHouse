@@ -31,7 +31,16 @@ public class FacturaService {
     private ProductoRepository productoRepository;
 
     public List<FacturaDto> listarFacturas() {
-        return facturaRepository.findAll().stream().map(FacturaMapper::toDTO).toList();
+        List<Factura> facturas = facturaRepository.findAll(); 
+        if (facturas.isEmpty()) {
+            System.out.println("No se encontraron facturas en la base de datos.");
+        }
+    
+        facturas.forEach(factura -> {
+            System.out.println("Factura ID: " + factura.getId() + ", Cliente: " + factura.getCliente());
+        });
+    
+        return facturas.stream().map(FacturaMapper::toDTO).toList();
     }
 
     public FacturaDto crearFactura(FacturaDto facturaDto) {
@@ -45,6 +54,11 @@ public class FacturaService {
         List<Producto> productos = productoRepository.findAll().stream()
             .filter(producto -> facturaDto.getProductoCodigoBarras().contains(producto.getCodigoBarras()))
             .toList();
+
+        for (Producto producto : productos) {
+            producto.reducirStock(1); 
+            productoRepository.save(producto);
+        }
 
         Factura factura = Factura.builder()
             .numeroFactura(facturaDto.getNumeroFactura())

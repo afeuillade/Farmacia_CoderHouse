@@ -1,5 +1,6 @@
 package com.example.FarmaciaData.dto;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import lombok.Builder;
@@ -13,6 +14,7 @@ public class ClienteDto {
     private String dni;
     private String direccion;
     private String telefono;
+    private LocalDate fechaCreacion;
     private List<String> productos;
     private List<String> farmacias;
 

@@ -25,10 +25,15 @@ public class Farmacia {
     @ManyToMany(mappedBy = "farmacias")
     private List <Cliente> clientes;
 
+    @ManyToMany(mappedBy = "farmacias")
+    private List <Factura> facturas;
+
 
 
     public Farmacia(String nombre){
         this.nombre = nombre;
     }
+
+
 
 }

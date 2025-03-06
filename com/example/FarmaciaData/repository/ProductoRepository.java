@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import com.example.FarmaciaData.models.Producto;
 
+import jakarta.transaction.Transactional;
+
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByNombreIn(List<String> nombres);
@@ -22,5 +24,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query("DELETE FROM Producto p WHERE p.codigoBarras = :codigoBarras")
         void deleteByCodigoBarras(@Param("codigoBarras") String codigoBarras);
     
+    @Transactional
+    @Modifying
+    @Query("UPDATE Producto p SET p.stock = p.stock - :cantidad WHERE p.codigoBarras = :codigoBarras AND p.stock >= :cantidad")
+    int reducirStock(@Param("codigoBarras") String codigoBarras, @Param("cantidad") int cantidad);
+
 
 }

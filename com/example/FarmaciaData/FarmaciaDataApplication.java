@@ -19,17 +19,20 @@ import com.example.FarmaciaData.repository.ClienteRepository;
 import com.example.FarmaciaData.repository.FacturaRepository;
 import com.example.FarmaciaData.repository.FarmaciaRepository;
 import com.example.FarmaciaData.repository.ProductoRepository;  */
-
+ 
 
 @SpringBootApplication
-public class FarmaciaDataApplication         	
+public class FarmaciaDataApplication           	
 {
+        
         public static void main(String[] args) {
 		SpringApplication.run(FarmaciaDataApplication.class, args);
 	}
 
-/* 
-implements CommandLineRunner
+
+
+/*implements CommandLineRunner
+        
 @Autowired
     private ProductoRepository productoRepository;
     @Autowired
@@ -56,6 +59,7 @@ implements CommandLineRunner
                 .nombre("Jabón en Polvo")
                 .fechaCreacion(LocalDate.of(2021, 7, 22))
                 .precio(125.00)
+                .stock(5)
                 .farmacias(List.of(farmacity, luna))
                 .build();
 
@@ -63,18 +67,21 @@ implements CommandLineRunner
                 .nombre("Ibuprofeno")
                 .fechaCreacion(LocalDate.of(2020, 3, 2))
                 .precio(500.00)
+                .stock(30)
                 .farmacias(List.of(marte, sol))
                 .build();
         Producto producto3 = Producto.builder()
                 .nombre("Colgate")
                 .fechaCreacion(LocalDate.of(2017, 5, 7))
                 .precio(700.00)
+                .stock(8)
                 .farmacias(List.of(farmacity, luna, marte))
                 .build();
         Producto producto4 = Producto.builder()
                 .nombre("Pastilla de la garganta")
                 .fechaCreacion(LocalDate.of(2025, 3, 31))
                 .precio(850.00)
+                .stock(0)
                 .farmacias(List.of(marte, luna, sol))
                 .build();
 
@@ -83,7 +90,9 @@ implements CommandLineRunner
         Cliente cliente1 = Cliente.builder()
                 .dni("12345678A")
                 .nombre("Pedro")
-                .apellido("Perez")                
+                .apellido("Perez")
+                .direccion("Calle 123")
+                .telefono("987654789")                                           
                 .productos(List.of(producto1, producto2))
                 .farmacias(List.of(farmacity, luna))
                 .build();
@@ -91,7 +100,9 @@ implements CommandLineRunner
         Cliente cliente2 = Cliente.builder()
                 .dni("87654321B")
                 .nombre("Maria")
-                .apellido("Gomez")                
+                .apellido("Gomez")
+                .direccion("Calle 8794") 
+                .telefono("123789456")                                                          
                 .productos(List.of(producto3, producto4))
                 .farmacias(List.of(marte, sol))
                 .build();                
@@ -99,7 +110,9 @@ implements CommandLineRunner
         Cliente cliente3 = Cliente.builder()                
                 .dni("34567890C")  
                 .nombre("Angeles") 
-                .apellido("Feuillade")             
+                .apellido("Feuillade")
+                .direccion("Calle 825")  
+                .telefono("123456789")                           
                 .productos(List.of(producto1, producto2, producto3, producto4))
                 .farmacias(List.of(farmacity, luna, marte, sol))
                 .build();
@@ -115,5 +128,5 @@ implements CommandLineRunner
             .build();
 
     facturaRepository.saveAll(List.of(factura1));
-    }    */	
+    }    	 */
 }

@@ -22,13 +22,13 @@ public class Cliente {
     @Column(name ="NAME")
     private String nombre;
     private String apellido;
-    @Column(name="cliente_dni")
+    @Column(name="cliente_dni", unique = true, nullable = false)
     private String dni;
     private String direccion;
     private String telefono;
 
-    
-    private LocalDate fechaCrecion;
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDate fechaCreacion;
     private LocalDate fechaUpdate;
     
 
@@ -40,6 +40,9 @@ public class Cliente {
     @ManyToMany
     @JoinTable(name = "clientes_productos", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))private List<Producto> productos;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
-private List<Factura> facturas;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true) private List<Factura> facturas;
+   
+
+
+
 }

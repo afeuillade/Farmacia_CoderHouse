@@ -60,6 +60,7 @@ public class ProductoService {
         Producto producto = Producto.builder()
             .nombre(productoDto.getNombre())
             .precio(productoDto.getPrecio())
+            .stock(productoDto.getStock())
             .farmacias(farmacias)
             .build();
         return ProductoMapper.toDTO(productoRepository.save(producto));
@@ -82,6 +83,7 @@ public class ProductoService {
     
         producto.setNombre(productoDto.getNombre());
         producto.setPrecio(productoDto.getPrecio());
+        producto.setStock(productoDto.getStock());
         producto.setFarmacias(farmacias);
         producto.setFechaUpdate(LocalDate.now());
     

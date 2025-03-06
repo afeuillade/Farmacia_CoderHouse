@@ -18,6 +18,7 @@ import com.example.FarmaciaData.repository.FarmaciaRepository;
 import com.example.FarmaciaData.repository.ProductoRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ClienteService {
@@ -53,19 +54,21 @@ public class ClienteService {
             .dni(clienteDto.getDni())
             .direccion(clienteDto.getDireccion())
             .telefono(clienteDto.getTelefono())
+            .fechaCreacion(clienteDto.getFechaCreacion())
             .productos(productos)
             .farmacias(farmacias)
             .build();
         return ClienteMapper.toDTO(clienteRepository.save(cliente));
     }
 
+    @Transactional
     public void eliminarClientePorDni(String dni) {
         Cliente cliente = clienteRepository.findByDni(dni);
         if (cliente == null) {
             throw new EntityNotFoundException("Cliente con DNI " + dni + " no encontrado");
         }
             for (Factura factura : cliente.getFacturas()) {
-            factura.setCliente(null); // desvincular la factura
+            factura.setCliente(null); 
             facturaRepository.save(factura);
           }
         clienteRepository.delete(cliente);
@@ -85,16 +88,18 @@ public class ClienteService {
         
         List<Farmacia> farmacias = farmaciaRepository.findAll().stream()
         .filter(farmacia -> clienteDto.getFarmacias().contains(farmacia.getNombre()))
-        .collect(Collectors.toList()); 
+        .collect(Collectors.toList());
 
+        
         List<Producto> productos = productoRepository.findAll().stream()
-        .filter(producto -> clienteDto.getProductos().contains(producto.getNombre()))
-        .collect(Collectors.toList()); 
+                .filter(producto -> clienteDto.getProductos().contains(producto.getNombre()))
+                .collect(Collectors.toList());
+
         cliente.setFarmacias(farmacias);
         cliente.setProductos(productos);
-    
+
         return ClienteMapper.toDTO(clienteRepository.save(cliente));
-    }
+            }
 
 
 

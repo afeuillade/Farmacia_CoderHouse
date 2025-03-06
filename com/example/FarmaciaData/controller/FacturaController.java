@@ -3,6 +3,7 @@ package com.example.FarmaciaData.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +24,17 @@ public class FacturaController {
     private FacturaService facturaService;
 
     // Listar todas las facturas
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<FacturaDto>> listarFacturas() {
-        List<FacturaDto> facturas = facturaService.listarFacturas();
-        return ResponseEntity.ok(facturas);
+        try {
+            System.out.println("Llamando al servicio para listar facturas...");
+            List<FacturaDto> facturas = facturaService.listarFacturas();
+            System.out.println("Número de facturas encontradas: " + facturas.size());
+            return ResponseEntity.ok(facturas);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Crear una nueva factura

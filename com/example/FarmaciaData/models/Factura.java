@@ -3,6 +3,8 @@ package com.example.FarmaciaData.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +25,7 @@ public class Factura {
     private Double totalCalculado;
 
 
+
     public Double calcularTotal() {
         if (productos == null || productos.isEmpty()) {
             return 0.0;
@@ -39,23 +42,26 @@ public class Factura {
         this.totalCalculado = calcularTotal();
     }
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id") 
+    @JsonIgnore // Ignorar serialización de cliente para evitar ciclo infinito
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable(
-        name = "facturas_productos", 
-        joinColumns = @JoinColumn(name = "factura_id"), 
-        inverseJoinColumns = @JoinColumn(name = "producto_id"))
-    private List<Producto> productos;
-
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) 
     @JoinTable(
         name = "facturas_farmacias", 
         joinColumns = @JoinColumn(name = "factura_id"), 
         inverseJoinColumns = @JoinColumn(name = "farmacia_id"))
+    @JsonIgnore // Ignorar serialización de farmacias para evitar ciclo infinito
     private List<Farmacia> farmacias;
+
+    @ManyToMany(fetch = FetchType.EAGER) 
+    @JoinTable(
+        name = "facturas_productos", 
+        joinColumns = @JoinColumn(name = "factura_id"), 
+        inverseJoinColumns = @JoinColumn(name = "producto_id"))
+    @JsonIgnore // Ignorar serialización de productos para evitar ciclo infinito
+    private List<Producto> productos;
 
 
 }

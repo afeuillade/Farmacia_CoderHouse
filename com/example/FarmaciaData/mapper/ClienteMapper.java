@@ -23,7 +23,8 @@ public class ClienteMapper {
                 .apellido(cliente.getApellido())
                 .dni(cliente.getDni())
                 .direccion(cliente.getDireccion())
-                .telefono(cliente.getTelefono())                
+                .telefono(cliente.getTelefono()) 
+                .fechaCreacion(cliente.getFechaCreacion())               
                 .productos(cliente.getProductos() !=null
                 ? cliente.getProductos().stream().map(Producto::getCodigoBarras).toList()
                 : List.of())
