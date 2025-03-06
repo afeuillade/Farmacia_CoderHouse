@@ -1,12 +1,15 @@
 package com.example.FarmaciaData;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+ 
+import org.springframework.boot.SpringApplication;
+/* 
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.CommandLineRunner; 
+
 
 import com.example.FarmaciaData.models.Cliente;
 import com.example.FarmaciaData.models.Factura;
@@ -15,29 +18,32 @@ import com.example.FarmaciaData.models.Producto;
 import com.example.FarmaciaData.repository.ClienteRepository;
 import com.example.FarmaciaData.repository.FacturaRepository;
 import com.example.FarmaciaData.repository.FarmaciaRepository;
-import com.example.FarmaciaData.repository.ProductoRepository;
+import com.example.FarmaciaData.repository.ProductoRepository;  */
 
 
 @SpringBootApplication
-public class FarmaciaDataApplication implements CommandLineRunner {
+public class FarmaciaDataApplication         	
+{
+        public static void main(String[] args) {
+		SpringApplication.run(FarmaciaDataApplication.class, args);
+	}
 
-	
-	@Autowired
+/* 
+implements CommandLineRunner
+@Autowired
     private ProductoRepository productoRepository;
     @Autowired
     private FarmaciaRepository farmaciaRepository;
     @Autowired
     private ClienteRepository   clienteRepository;
     @Autowired
-    private FacturaRepository facturaRepository;
+    private FacturaRepository facturaRepository; 
+ 
+
+	
 
 
-	public static void main(String[] args) {
-		SpringApplication.run(FarmaciaDataApplication.class, args);
-	}
-
-
-    @Override
+  @Override
     public void run(String... args) throws Exception {
         Farmacia farmacity = new Farmacia("Farmacity");
         Farmacia sol = new Farmacia("Farmacia Sol");
@@ -109,5 +115,5 @@ public class FarmaciaDataApplication implements CommandLineRunner {
             .build();
 
     facturaRepository.saveAll(List.of(factura1));
-    }
+    }    */	
 }

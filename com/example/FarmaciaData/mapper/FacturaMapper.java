@@ -20,14 +20,19 @@ public class FacturaMapper {
         if (factura == null) {
             return null;
         }
-
+    
+        if (factura.getTotalCalculado() == null) {
+            factura.setTotalCalculado(factura.calcularTotal());
+        }
+    
         return FacturaDto.builder()
             .id(factura.getId())
             .numeroFactura(factura.getNumeroFactura())
             .fecha(factura.getFecha())
-            .clienteId(factura.getCliente().getId())  // Mapeo del cliente
-            .farmaciaIds(factura.getFarmacias().stream().map(Farmacia::getId).toList())  // Mapeo de farmacias
-            .productoCodigoBarras(factura.getProductos().stream().map(Producto::getCodigoBarras).toList())  // Mapeo de productos
+            .totalCalculado(factura.getTotalCalculado()) 
+            .clienteId(factura.getCliente().getId())
+            .farmaciaIds(factura.getFarmacias().stream().map(Farmacia::getId).toList())
+            .productoCodigoBarras(factura.getProductos().stream().map(Producto::getCodigoBarras).toList())
             .build();
     }
 
@@ -43,6 +48,7 @@ public class FacturaMapper {
         return Factura.builder()
             .numeroFactura(facturaDto.getNumeroFactura())
             .fecha(facturaDto.getFecha())
+            .totalCalculado(facturaDto.getTotalCalculado())
             .cliente(cliente)
             .productos(productos)
             .farmacias(farmacias)

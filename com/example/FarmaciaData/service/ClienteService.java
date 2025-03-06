@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.example.FarmaciaData.dto.ClienteDto;
 import com.example.FarmaciaData.mapper.ClienteMapper;
 import com.example.FarmaciaData.models.Cliente;
+import com.example.FarmaciaData.models.Factura;
 import com.example.FarmaciaData.models.Farmacia;
 import com.example.FarmaciaData.models.Producto;
 import com.example.FarmaciaData.repository.ClienteRepository;
+import com.example.FarmaciaData.repository.FacturaRepository;
 import com.example.FarmaciaData.repository.FarmaciaRepository;
 import com.example.FarmaciaData.repository.ProductoRepository;
 
@@ -28,6 +30,9 @@ public class ClienteService {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private FacturaRepository facturaRepository;
 
 
     public List<ClienteDto> listarClientes(){
@@ -59,6 +64,10 @@ public class ClienteService {
         if (cliente == null) {
             throw new EntityNotFoundException("Cliente con DNI " + dni + " no encontrado");
         }
+            for (Factura factura : cliente.getFacturas()) {
+            factura.setCliente(null); // desvincular la factura
+            facturaRepository.save(factura);
+          }
         clienteRepository.delete(cliente);
     }
 
@@ -81,6 +90,8 @@ public class ClienteService {
         List<Producto> productos = productoRepository.findAll().stream()
         .filter(producto -> clienteDto.getProductos().contains(producto.getNombre()))
         .collect(Collectors.toList()); 
+        cliente.setFarmacias(farmacias);
+        cliente.setProductos(productos);
     
         return ClienteMapper.toDTO(clienteRepository.save(cliente));
     }

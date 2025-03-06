@@ -15,5 +15,6 @@ public class FacturaDto {
     private Long clienteId;
     private List<Long> farmaciaIds;
     private List<String> productoCodigoBarras;
+    private Double totalCalculado;
 
 }

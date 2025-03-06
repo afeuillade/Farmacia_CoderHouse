@@ -9,6 +9,7 @@ import com.example.FarmaciaData.dto.ProductoDto;
 import com.example.FarmaciaData.models.Farmacia;
 import com.example.FarmaciaData.models.Producto;
 import com.example.FarmaciaData.repository.FarmaciaRepository;
+import com.example.FarmaciaData.repository.ProductoRepository;
 
 @Component
 public class ProductoMapper {
@@ -38,18 +39,18 @@ public class ProductoMapper {
     }
 
 
-    public static Producto toEntity(ProductoDto productoDto, FarmaciaRepository farmaciaRepository) {
+    public static Producto toEntity(ProductoDto productoDto, ProductoRepository productoRepository, FarmaciaRepository farmaciaRepository) {
+        Producto productoExistente = productoRepository.findByNombre(productoDto.getNombre());
+    
         return Producto.builder()
-                .codigoBarras(productoDto.getCodigoBarras())
+                .codigoBarras(productoExistente != null ? productoExistente.getCodigoBarras() : productoDto.getCodigoBarras()) // Mantener código si existe
                 .nombre(productoDto.getNombre())
                 .precio(productoDto.getPrecio())
-                .farmacias(productoDto.getFarmacias() !=null
+                .farmacias(productoDto.getFarmacias() != null
                     ? farmaciaRepository.findAll().stream()
-                        .filter(cat->productoDto.getFarmacias().contains(cat.getNombre()))
+                        .filter(farmacia -> productoDto.getFarmacias().contains(farmacia.getNombre()))
                         .toList()
                     : List.of())
                 .build();
     }
-
 }
-

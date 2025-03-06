@@ -40,5 +40,6 @@ public class Cliente {
     @ManyToMany
     @JoinTable(name = "clientes_productos", joinColumns = @JoinColumn(name = "cliente_id"), inverseJoinColumns = @JoinColumn(name = "producto_id"))private List<Producto> productos;
 
-    
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+private List<Factura> facturas;
 }

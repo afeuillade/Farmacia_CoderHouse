@@ -37,6 +37,9 @@ public class Producto {
 
     @ManyToMany(mappedBy = "productos") private List<Cliente> clientes;
 
+    @ManyToMany(mappedBy = "productos") 
+private List<Factura> facturas;
+
 
 
     // Generar código de barras aleatorio automáticamente
@@ -58,3 +61,4 @@ public class Producto {
         return codigo.toString();
     }
 }
+

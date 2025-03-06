@@ -13,6 +13,7 @@ import com.example.FarmaciaData.dto.ProductoDto;
 import com.example.FarmaciaData.mapper.ProductoMapper;
 import com.example.FarmaciaData.models.Farmacia;
 import com.example.FarmaciaData.models.Producto;
+import com.example.FarmaciaData.repository.FacturaRepository;
 import com.example.FarmaciaData.repository.FarmaciaRepository;
 import com.example.FarmaciaData.repository.ProductoRepository;
 
@@ -26,6 +27,8 @@ public class ProductoService {
     private ProductoRepository productoRepository;
     @Autowired
     private FarmaciaRepository farmaciaRepository;
+    @Autowired
+    private FacturaRepository facturaRepository;
 
 
 
@@ -91,6 +94,7 @@ public class ProductoService {
         if (producto == null) {
             throw new EntityNotFoundException("Producto con código de barras " + codigoBarras + " no encontrado");
         }
+        facturaRepository.deleteByProductoId(codigoBarras);
         productoRepository.deleteByCodigoBarras(codigoBarras);
         System.out.println("Producto eliminado");
         return ProductoMapper.toDTO(producto);

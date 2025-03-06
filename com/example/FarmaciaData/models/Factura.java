@@ -19,9 +19,28 @@ public class Factura {
 
     private String numeroFactura;
     private LocalDate fecha;
+    @Column(name = "total_calculado")
+    private Double totalCalculado;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id") // Relación con Cliente
+
+    public Double calcularTotal() {
+        if (productos == null || productos.isEmpty()) {
+            return 0.0;
+        }
+        return productos.stream()
+                        .filter(producto -> producto != null && producto.getPrecio() != null)
+                        .mapToDouble(Producto::getPrecio)
+                        .sum();
+    }
+
+    @PrePersist
+    @PreUpdate
+    public void actualizarTotalCalculado() {
+        this.totalCalculado = calcularTotal();
+    }
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "cliente_id") 
     private Cliente cliente;
 
     @ManyToMany

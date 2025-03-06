@@ -14,3 +14,4 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     Cliente findByDni(String dni);
 
 }
+

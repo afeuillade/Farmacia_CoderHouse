@@ -54,8 +54,14 @@ public class FacturaService {
             .farmacias(farmacias)
             .build();
 
-        return FacturaMapper.toDTO(facturaRepository.save(factura));
+        factura.setTotalCalculado(factura.calcularTotal());
+
+        factura = facturaRepository.save(factura);
+
+        return FacturaMapper.toDTO(factura);
     }
+    
+
     public FacturaDto obtenerFactura(Long id) {
         Factura factura = facturaRepository.findById(id).orElse(null); 
         
@@ -82,3 +88,4 @@ public class FacturaService {
 
 
 }
+
