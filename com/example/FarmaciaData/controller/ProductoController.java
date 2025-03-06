@@ -14,9 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.FarmaciaData.ApiResponse;
+import com.example.FarmaciaData.dto.ClienteDto;
 import com.example.FarmaciaData.dto.ProductoDto;
 import com.example.FarmaciaData.service.ProductoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestController
@@ -26,27 +31,42 @@ public class ProductoController {
 
 
     @GetMapping("/producto/all")
+    @Operation(summary = "Obtenemos todos los productos que registramos")
+    @ApiResponses(value={
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", 
+            description = "Successful opereation", 
+            content = @Content(schema = @Schema (implementation = ClienteDto.class))),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404", 
+            description = "Erro Fatal", 
+            content = @Content(schema = @Schema (implementation = ApiResponse.class)))
+    })
     public ResponseEntity<List<ProductoDto>> listar() {
         return ResponseEntity.ok().body(productoService.listarProductos());
     }
 
     @GetMapping("/codigoBarras/{codigoBarras}")
+    @Operation(summary = "Obtenemos un producto por su codigo de barras")
     public ResponseEntity<ProductoDto> listar(@PathVariable String codigoBarras) {
         return ResponseEntity.ok().body(productoService.obtenerPorCodigoBarras(codigoBarras));
     }
 
     @GetMapping("/nombre/{nombre}")
+    @Operation(summary = "Obtenemos un producto por su nombre")
     public ResponseEntity<List<ProductoDto>> listarPorNombre(@PathVariable String nombre) {
         return ResponseEntity.ok().body(productoService.obtenerPorNombre(List.of(nombre)));
     }
 
     @GetMapping("/apiResponse")
+    @Operation(summary = "Obtenemos todos los productos que registramos con ApiResponse")
     public ResponseEntity<?> listarApiResponse(){
         List <ProductoDto> productos = productoService.listarProductos();
         return ResponseEntity.ok().body(new ApiResponse<>("ok",productos,"sin errores"));
     }
 
     @PutMapping("/modificar/{codigoBarras}")
+    @Operation(summary = "Modificamos a los productos que tengan errores")
     public ResponseEntity<?> modificar(@PathVariable String codigoBarras, @RequestBody ProductoDto productoDto) {
     try {
         ProductoDto productoActualizado = productoService.actualizarProducto(codigoBarras, productoDto);
@@ -57,6 +77,17 @@ public class ProductoController {
     }
 
     @PostMapping("/agregarProducto")
+    @Operation(summary ="Agregamos a los productos que se registran")
+    @ApiResponses(value={
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "200", 
+            description = "Successful opereation", 
+            content = @Content(schema = @Schema (implementation = ClienteDto.class))),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(
+            responseCode = "404", 
+            description = "Erro Fatal", 
+            content = @Content(schema = @Schema (implementation = ApiResponse.class)))
+    })
     public ResponseEntity <ApiResponse<ProductoDto>> agregarProducto(@RequestBody ProductoDto productoDto) {
         try {
             ProductoDto productoCreado = productoService.crearProducto(productoDto);
@@ -67,6 +98,7 @@ public class ProductoController {
     }
 
     @DeleteMapping("/eliminar/{codigoBarras}")
+    @Operation(summary = "Eliminamos a los productos que se encuentran registrados")
     public ResponseEntity<ApiResponse<ProductoDto>> eliminaProducto(@PathVariable String codigoBarras){
         try {
             ProductoDto productoEliminado = productoService.eliminarProducto(codigoBarras);
